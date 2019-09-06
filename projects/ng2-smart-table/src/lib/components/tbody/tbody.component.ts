@@ -55,4 +55,20 @@ export class Ng2SmartTableTbodyComponent {
     this.isActionDelete = this.grid.getSetting('actions.delete');
     this.noDataMessage = this.grid.getSetting('noDataMessage');
   }
+
+  onDoubleClickRow(event: any, row) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.editRowSelect.emit(row);
+
+    if (this.grid.getSetting('mode') === 'external') {
+      this.edit.emit({
+        data: row.getData(),
+        source: this.source
+      });
+    } else {
+      this.grid.edit(row);
+    }
+  }
 }

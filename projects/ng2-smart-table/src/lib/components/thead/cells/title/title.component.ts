@@ -21,7 +21,7 @@ import { Column } from '../../../../lib/data-set/column';
     <ng-template #dynamicTarget></ng-template>
     <div *ngIf="!customComponent">
       <a href="#" *ngIf="column.isSortable"
-                  (click)="_sort($event, column)"
+                  (click)="_sort($event)"
                   class="ng2-smart-sort-link sort"
                   [ngClass]="currentDirection">
         <div *ngIf="column.title">{{ column.title }}</div>
@@ -35,7 +35,7 @@ export class TitleComponent implements OnChanges {
   currentDirection = '';
   @Input() column: Column;
   @Input() source: DataSource;
-  @ViewChild('dynamicTarget', { read: ViewContainerRef }) dynamicTarget: any;
+  @ViewChild('dynamicTarget', { read: ViewContainerRef, static: true }) dynamicTarget: any;
   @Output() sort = new EventEmitter<any>();
 
   constructor(private resolver: ComponentFactoryResolver) { }
