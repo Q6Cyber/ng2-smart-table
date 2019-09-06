@@ -137,7 +137,6 @@ export class Ng2SmartTableComponent implements OnChanges {
   onSelectAllRows($event: any) {
     this.isAllSelected = !this.isAllSelected;
     this.grid.selectAllRows(this.isAllSelected);
-    const selectedRows = this.grid.getSelectedRows();
 
     this.emitUserSelectRow(null);
     this.emitSelectRow(null);

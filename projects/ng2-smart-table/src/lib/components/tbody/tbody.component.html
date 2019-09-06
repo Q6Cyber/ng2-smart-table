@@ -3,8 +3,8 @@
   (click)="userSelectRow.emit(row)"
   (mouseover)="rowHover.emit(row)"
   (dblclick)="onDoubleClickRow($event, row)"
-  class="ng2-smart-row {{ row.getClass() }}"
-  [className]="rowClassFunction(row)"
+  class="ng2-smart-row"
+  [className]="row.getClass()"
   [ngClass]="{ selected: row.isSelected }"
 >
   <td
@@ -58,25 +58,6 @@
     </ng2-smart-table-cell>
   </td>
 
-  <<<<<<< HEAD:src/ng2-smart-table/components/tbody/tbody.component.html
-  <td
-    *ngIf="row.isInEditing && grid.showActionColumn('right')"
-    class="ng2-smart-actions"
-  >
-    <ng2-st-tbody-create-cancel
-      [grid]="grid"
-      [row]="row"
-      [editConfirm]="editConfirm"
-    ></ng2-st-tbody-create-cancel>
-  </td>
-
-  <td
-    *ngIf="!row.isInEditing && grid.showActionColumn('right')"
-    class="ng2-smart-actions"
-  >
-    =======
-  </td>
-
   <td
     *ngIf="row.isInEditing && showActionColumnRight"
     class="ng2-smart-actions"
@@ -99,8 +80,6 @@
       [source]="source"
     ></ng2-st-tbody-custom>
 
-    >>>>>>>
-    upstream/master:projects/ng2-smart-table/src/lib/components/tbody/tbody.component.html
     <ng2-st-tbody-edit-delete
       [grid]="grid"
       [deleteConfirm]="deleteConfirm"
