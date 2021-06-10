@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Ng2CompleterModule } from 'ng2-completer';
 
 import { FilterModule } from '../filter/filter.module';
 import { CellModule } from '../cell/cell.module';
@@ -35,6 +36,7 @@ const THEAD_COMPONENTS = [
     FormsModule,
     FilterModule,
     CellModule,
+    Ng2CompleterModule,
   ],
   declarations: [
     ...THEAD_COMPONENTS,

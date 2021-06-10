@@ -14,6 +14,7 @@ export class Column {
   sortDirection: string = '';
   defaultSortDirection: string = '';
   editor: { type: string, config: any, component: any } = { type: '', config: {}, component: null };
+  header: { component: any } = { component: null };
   filter: { type: string, config: any, component: any } = { type: '', config: {}, component: null };
   renderComponent: any = null;
   compareFunction: Function;
@@ -60,6 +61,7 @@ export class Column {
     this.hide = !!this.settings['hide'];
     this.type = this.prepareType();
     this.editor = this.settings['editor'];
+    this.header = this.settings['header'];
     this.filter = this.settings['filter'];
     this.renderComponent = this.settings['renderComponent'];
 
