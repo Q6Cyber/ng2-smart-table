@@ -2,7 +2,7 @@ import { Subject, Subscription } from 'rxjs';
 import { Observable } from 'rxjs';
 import { EventEmitter } from '@angular/core';
 
-import { Deferred, getDeepFromObject, getPageForRowIndex } from './helpers';
+import { Deferred, getDeepFromObject, uuidv4 } from './helpers';
 import { Column } from './data-set/column';
 import { Row } from './data-set/row';
 import { DataSet } from './data-set/data-set';
@@ -70,6 +70,7 @@ export class Grid {
   }
 
   setSource(source: DataSource) {
+    this.setIds(source.getAllSync());
     this.source = this.prepareSource(source);
     this.detach();
 
@@ -78,6 +79,22 @@ export class Grid {
     this.sourceOnUpdatedSubscription = this.source.onUpdated().subscribe((data: any) => {
       const changedRow = this.dataSet.findRowByData(data);
       changedRow.setData(data);
+    });
+  }
+
+  private setIds(source: Array<any>) {
+    source.map(element => {
+      element.___id = uuidv4();
+      return element;
+    });
+  }
+
+  private checkIds(elements: Array<any>) {
+    elements.map(element => {
+      if (!element.___id) {
+        element.___id = uuidv4();
+      }
+      return element;
     });
   }
 
@@ -191,6 +208,7 @@ export class Grid {
 
   processDataChange(changes: any) {
     if (this.shouldProcessChange(changes)) {
+      this.checkIds(changes['elements']);
       this.dataSet.setData(changes['elements']);
       if (this.getSetting('selectMode') !== 'multi') {
         const row = this.determineRowToSelect(changes);
@@ -281,13 +299,18 @@ export class Grid {
   }
 
   getSelectedRows(): Array<any> {
-    return this.dataSet.getRows()
-      .filter(r => r.isSelected);
+    let ids = this.dataSet.getPersistentSelection();
+    let elements = this.source.getAllSync();
+    let selected = elements.filter(el => ids.indexOf(el.___id) !== -1);
+    return selected.map(el => {
+        let clean = Object.assign({}, el);
+        delete clean.___id;
+        return clean;
+      });
   }
 
   selectAllRows(status: any) {
-    this.dataSet.getRows()
-      .forEach(r => r.isSelected = status);
+    this.dataSet.selectAllRows(status);
   }
 
   getFirstRow(): Row {

@@ -9,7 +9,8 @@ export class DataSet {
   protected columns: Array<Column> = [];
   protected rows: Array<Row> = [];
   protected selectedRow: Row;
-  protected willSelect: string;
+  protected willSelect: string = 'first';
+  protected persistentSelection = new Set<any>();
 
   constructor(data: Array<any> = [], protected columnSettings: Object) {
     this.createColumns(columnSettings);
@@ -43,19 +44,40 @@ export class DataSet {
     return this.rows.find((row: Row) => row.getData() === data);
   }
 
+  selectAllRows(status: any){
+    this.rows.forEach(row => {
+      row.isSelected = status
+      this.checkSelection(row);
+    });
+  }
+
   deselectAll() {
     this.rows.forEach((row) => {
       row.isSelected = false;
+      this.checkSelection(row);      
     });
     // we need to clear selectedRow field because no one row selected
     this.selectedRow = undefined;
   }
 
-  selectRow(row: Row): Row | undefined {
+  getPersistentSelection(): Array<any> {
+    return Array.from(this.persistentSelection);
+  }
+
+  private checkSelection(row: Row) {
+    if (row.isSelected) {
+      this.persistentSelection.add(row.getData().___id);
+    } else {
+      this.persistentSelection.delete(row.getData().___id);
+    }
+  };
+
+  selectRow(row: Row): Row {
     const previousIsSelected = row.isSelected;
     this.deselectAll();
 
     row.isSelected = !previousIsSelected;
+    this.checkSelection(row);
     this.selectedRow = row;
 
     return this.selectedRow;
@@ -63,6 +85,7 @@ export class DataSet {
 
   multipleSelectRow(row: Row): Row {
     row.isSelected = !row.isSelected;
+    this.checkSelection(row);    
     this.selectedRow = row;
 
     return this.selectedRow;
@@ -162,7 +185,9 @@ export class DataSet {
   createRows() {
     this.rows = [];
     this.data.forEach((el, index) => {
-      this.rows.push(new Row(index, el, this));
+      let row = new Row(index, el, this);
+      row.isSelected = this.persistentSelection.has(el.___id);
+      this.rows.push(row);
     });
   }
 }

@@ -57,5 +57,22 @@ export class Ng2SmartTableTbodyComponent {
 
   getVisibleCells(cells: Array<Cell>): Array<Cell> {
     return (cells || []).filter((cell: Cell) => !cell.getColumn().hide);
+
+  }
+
+  onDoubleClickRow(event: any, row) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.editRowSelect.emit(row);
+
+    if (this.grid.getSetting('mode') === 'external') {
+      this.edit.emit({
+        data: row.getData(),
+        source: this.source
+      });
+    } else {
+      this.grid.edit(row);
+    }
   }
 }
