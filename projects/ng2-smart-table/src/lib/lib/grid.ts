@@ -2,7 +2,7 @@ import { Subject, Subscription } from 'rxjs';
 import { Observable } from 'rxjs';
 import { EventEmitter } from '@angular/core';
 
-import { Deferred, getDeepFromObject, uuidv4 } from './helpers';
+import { Deferred, getDeepFromObject, getPageForRowIndex, uuidv4 } from './helpers';
 import { Column } from './data-set/column';
 import { Row } from './data-set/row';
 import { DataSet } from './data-set/data-set';

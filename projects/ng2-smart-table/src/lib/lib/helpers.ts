@@ -97,6 +97,11 @@ export function getDeepFromObject(object = {}, name: string, defaultValue?: any)
   return typeof level === 'undefined' ? defaultValue : level;
 }
 
+export function getPageForRowIndex(index: number, perPage: number): number {
+  // we need to add 1 to convert 0-based index to 1-based page number.
+  return Math.floor(index / perPage) + 1;
+}
+
 // https://gist.github.com/jed/982883
 export function uuidv4(a:any = null): string{
   return a?(a^Math.random()*16>>a/4).toString(16):(""+1e7+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,uuidv4);
