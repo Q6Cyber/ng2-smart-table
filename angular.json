@@ -140,6 +140,5 @@
         }
       }
     }
-  },
-  "defaultProject": "ng2-smart-table"
+  }
 }
